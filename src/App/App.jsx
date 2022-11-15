@@ -7,7 +7,7 @@ import "./App.scss";
 import { SettingsContextProvider } from "../Context/SettingsContext";
 import { BrowserRouter, Route, Router, Routes } from "react-router-dom";
 import Home from "../pages/Home/Home";
-import Settings from "../Settings/Settings";
+import Settings from "../pages/Settings/Settings";
 import useFetch from "../hooks/useFetch";
 
 function App() {
