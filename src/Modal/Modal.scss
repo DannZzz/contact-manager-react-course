@@ -1,0 +1,9 @@
+@import "../styles/vars.scss";
+
+.custom-modal {
+  background: $background-component-gradient-color;
+  width: fit-content;
+  padding: 30px;
+
+  margin:50px auto;
+}

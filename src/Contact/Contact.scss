@@ -1,0 +1,174 @@
+@import "../styles/vars.scss";
+
+.contact-item,
+.contact-item-head {
+  flex: 1;
+  display: flex;
+  width: 100%;
+  justify-content: start;
+  align-items: center;
+  gap: 10px;
+  padding: 3px 0;
+  border-bottom: 0.5px solid rgb(83, 78, 78);
+
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"] {
+    @include basic-input-style;
+    padding: 5px 10px;
+  }
+
+  &.contact-item-head {
+    font-size: 2em;
+    border-bottom: 1px solid $special-text-color;
+  }
+
+
+  * {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .contact-item-checkbox {
+    cursor: pointer;
+    flex: 1;
+  }
+
+  .contact-item-name {
+    flex: 3;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    justify-content: start;
+    .contact-item-name-avatar {
+      border-radius: 9999px;
+      width: 40px;
+      height: 40px;
+      object-fit: cover;
+      &.edit-mode:hover {
+        filter: blur(1px);
+      }
+    }
+
+    // .contact-item-name-text {
+    // }
+  }
+
+  .contact-item-email {
+    flex: 3;
+  }
+
+  .contact-item-phone {
+    flex: 3;
+  }
+
+  .contact-item-tags {
+    flex: 3;
+  }
+
+  .contact-item-methods {
+    flex: 1;
+
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+
+    .contact-item-methods-item {
+      cursor: pointer;
+      @include down-click($down: 0.2em);
+    }
+
+    .contact-item-methods-item-confirm {
+      margin-left: 5px;
+      display: flex;
+      flex-direction: column;
+
+      .contact-item-methods-item-confirm-buttons {
+        display: flex;
+        gap: 5px;
+        .yes {
+          @include button-style($height: 10px, $color: rgb(4, 167, 4));
+        }
+
+        .no {
+          @include button-style($height: 10px, $color: red);
+        }
+      }
+    }
+  }
+}
+
+.background-color {
+  background: $background-gradient-color;
+}
+
+.contact-list-card {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+
+  .contact-item-card {
+    flex: calc(50% - 30px);
+    position: relative;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    .contact-item-card-checkbox {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+    }
+    border: 0.5px solid rgb(83, 78, 78);
+
+    .contact-item-card-avatar {
+      width: 200px;
+      height: 200px;
+      border-radius: 9999px;
+      object-fit: cover;
+    }
+
+    .contact-item-card-texts {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+  }
+
+  .contact-item-card-methods {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+
+    .contact-item-card-methods-item {
+      cursor: pointer;
+      @include down-click($down: 0.2em);
+    }
+
+    .contact-item-card-methods-item-confirm {
+      margin-left: 5px;
+      display: flex;
+      flex-direction: column;
+
+      .contact-item-card-methods-item-confirm-buttons {
+        display: flex;
+        gap: 5px;
+        .yes {
+          @include button-style($height: 10px, $color: rgb(4, 167, 4));
+        }
+
+        .no {
+          @include button-style($height: 10px, $color: red);
+        }
+      }
+    }
+  }
+}

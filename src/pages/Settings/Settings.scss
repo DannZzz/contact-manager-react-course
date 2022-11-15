@@ -1,0 +1,29 @@
+.settings-container {
+  width: 40%;
+  margin: 200px auto;
+  max-height: 500px;
+  height: fit-content;
+  border: 1px solid white;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+
+  .setting {
+    padding: 10px;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    
+    .setting-title {
+    }
+    
+    .setting-inputs {
+        display: flex;
+    }
+  }
+}

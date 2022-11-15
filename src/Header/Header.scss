@@ -1,0 +1,53 @@
+@import "../styles/vars.scss";
+
+.header {
+  height: 70px;
+  background: $background-color;
+  color: $special-text-color;
+  padding: 10px 30px;
+  .header-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .app-name {
+      flex: 2;
+    }
+
+    .header-item {
+      span,
+      a {
+        @include button-style($color: transparent);
+        @include prevent-link;
+      }
+
+      .search-input {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+
+        input {
+          @include basic-input-style();
+          padding: 5px 10px;
+        }
+
+        .custom-select {
+          select {
+            cursor: pointer;
+            background: $background-color;
+            padding: 5px 10px;
+            outline: none;
+            color: $special-text-color;
+          }
+        }
+
+        .search-button {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}

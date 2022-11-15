@@ -1,0 +1,51 @@
+@import "../../styles/vars.scss";
+
+.contact-in-modal-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  .contact-in-modal-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+
+    .input-avatar {
+      object-fit: cover;
+      width: 150px;
+      height: 150px;
+      border-radius: 9999px;
+
+      &:hover {
+        cursor: pointer;
+        filter: blur(1px);
+      }
+    }
+
+    .input-field {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+
+      input {
+        @include basic-input-style;
+      }
+    }
+
+    .contact-in-modal-buttons {
+      display: flex;
+      gap: 30px;
+
+      .contact-in-modal-form-submit {
+        @include button-style($color: rgb(1, 167, 1));
+      }
+      .contact-in-modal-form-cancel {
+        @include button-style($color: rgb(214, 15, 8));
+      }
+    }
+  }
+}
