@@ -39,7 +39,7 @@ function Contact({
   function onSave(data, fn) {
     onValuesSave(
       contact.id,
-      data,
+      { ...data, phone: data.phone.filter((x) => x) },
       fn
         ? fn
         : () => {
@@ -108,7 +108,11 @@ function Contact({
 
       <span className="contact-item-email">{contact.email}</span>
 
-      <span className="contact-item-phone">{contact.phone}</span>
+      <div className="contact-item-phone">
+        {contact.phone?.map((phone, i) => (
+          <span key={i}>{phone}</span>
+        ))}
+      </div>
 
       <div className="contact-item-tags">{contact.profession}</div>
       <div className="contact-item-methods">

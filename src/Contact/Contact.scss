@@ -23,7 +23,6 @@
     border-bottom: 1px solid $special-text-color;
   }
 
-
   * {
     display: flex;
     align-items: flex-start;
@@ -60,6 +59,11 @@
 
   .contact-item-phone {
     flex: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
   }
 
   .contact-item-tags {

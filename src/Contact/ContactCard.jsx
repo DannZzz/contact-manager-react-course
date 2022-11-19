@@ -69,7 +69,9 @@ function ContactCard({
       <div className="contact-item-card-texts">
         <strong>{contact.firstName + " " + contact.lastName}</strong>
         <span>{contact.email}</span>
-        <span>{contact.phone}</span>
+        {contact.phone.map((phone, i) => (
+          <span key={i}>{phone}</span>
+        ))}
         <span>{contact.profession}</span>
       </div>
 

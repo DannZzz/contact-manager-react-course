@@ -27,11 +27,20 @@ const ContactInModal = ({ contact, onSubmit, label }) => {
 
   function handleChange(e) {
     let val = e.target.value;
+    let name = e.target.name;
     if (e.target.name === "avatar")
       val = e.target?.files?.[0] || DEFAULT_AVATAR;
 
+    if (e.target.name.startsWith("phone")) {
+      const index = +name.slice(5);
+      name = "phone";
+      const phones = [...(copyContact?.phone || [])];
+      phones[index] = e.target.value;
+      val = phones;
+    }
+
     const upt = { ...copyContact };
-    upt[e.target.name] = val;
+    upt[name] = val;
     setCopyContact(upt);
   }
 
@@ -74,14 +83,16 @@ const ContactInModal = ({ contact, onSubmit, label }) => {
         </div>
         <div className="input-field">
           <span>Phone</span>{" "}
-          <input
-            placeholder="Phone"
-            value={copyContact.phone}
-            onChange={handleChange}
-            type="phone"
-            name="phone"
-            required
-          />
+          {[...(copyContact.phone || []), ""]?.map((phone, i) => (
+            <input
+              key={i}
+              placeholder={"Phone " + (i + 1)}
+              name={"phone" + i}
+              value={phone || ""}
+              onChange={handleChange}
+              type="tel"
+            />
+          ))}
         </div>
         <div className="input-field">
           <span>Profession</span>{" "}

@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react";
-import { uuid } from "anytool";
 import Contact from "../../Contact/Contact";
 import ContactHead from "../../Contact/ContactHead";
 import "./Home.scss";
@@ -7,12 +6,14 @@ import { SettingsContext } from "../../Context/SettingsContext";
 import ContactCard from "../../Contact/ContactCard";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import useFetch from "../../hooks/useFetch";
-import { ServerPath } from "../../config";
+import { ErrorContext } from "../../Context/ErrorContext";
 
 const Home = ({ list, setList, selects, setSelects }) => {
   const isEdit = useState(false);
   const { request } = useFetch();
   const { settings } = useContext(SettingsContext);
+  const { dispatchError } = useContext(ErrorContext);
+
   function onRemove(id) {
     request("/list/delete", { method: "DELETE", query: { ids: id } }).then(
       (res) => {
@@ -42,14 +43,31 @@ const Home = ({ list, setList, selects, setSelects }) => {
   }
 
   function onValuesSave(id, contact, onOk) {
+    const entries = Object.entries(contact);
+    for (let index = 0; index < entries.length; index++) {
+      const element = entries[index];
+      if (element[0] === "phone") {
+        if (!element[1].filter((x) => x).length) {
+          return dispatchError(
+            "At least one phone number must be specified",
+            2000
+          );
+        }
+      }
+    }
     const index = list.findIndex((cnt) => cnt.id === id);
     const clone = [...list];
     const form = new FormData();
     Object.keys(contact).forEach((key) => {
-      if (key !== "avatar" && key !== "id") form.append(key, contact[key]);
+      if (!["avatar", "id", "phone"].includes(key))
+        form.append(key, contact[key]);
     });
     if (contact.avatar && typeof contact.avatar !== "string")
       form.append("avatar", contact.avatar);
+
+    contact.phone.forEach((phone) => {
+      phone && form.append("phone[]", phone);
+    });
 
     request("/list/edit/" + id, { method: "PUT", body: form }).then((res) => {
       if (res?.status === "OK") {

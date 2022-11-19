@@ -12,19 +12,27 @@ import { DEFAULT_AVATAR } from "../../config";
  * @returns
  */
 const ContactInline = ({ contact, onSave, onCancel }) => {
-  const [copyContact, setCopyContact] = useState(contact);
-
+  const [copyContact, setCopyContact] = useState({ ...contact, phone: [] });
   function onSubmit() {
     onSave(copyContact);
   }
 
   function handleChange(e) {
     let val = e.target.value;
+    let name = e.target.name;
     if (e.target.name === "avatar")
       val = e.target?.files?.[0] || DEFAULT_AVATAR;
 
+    if (e.target.name.startsWith("phone")) {
+      const index = +name.slice(5);
+      name = "phone";
+      const phones = [...(copyContact?.phone || [])];
+      phones[index] = e.target.value;
+      val = phones;
+    }
+
     const upt = { ...copyContact };
-    upt[e.target.name] = val;
+    upt[name] = val;
     setCopyContact(upt);
   }
 
@@ -80,14 +88,18 @@ const ContactInline = ({ contact, onSave, onCancel }) => {
         type="email"
         className="contact-item-email"
       />
-      <input
-        placeholder="Phone"
-        name="phone"
-        value={copyContact.phone || ""}
-        onChange={handleChange}
-        type="tel"
-        className="contact-item-phone"
-      />
+      <div className="contact-item-phone">
+        {[...(copyContact.phone || []), ""]?.map((phone, i) => (
+          <input
+            key={i}
+            placeholder={"Phone " + (i + 1)}
+            name={"phone" + i}
+            value={phone || ""}
+            onChange={handleChange}
+            type="tel"
+          />
+        ))}
+      </div>
       <input
         placeholder="Profession"
         name="profession"
