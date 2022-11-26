@@ -1,14 +1,15 @@
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import Header from "../Header/Header";
 import _Modal from "react-modal";
 import Modal from "../Modal/Modal";
 import "./App.scss";
 import { BrowserRouter, Route, Router, Routes } from "react-router-dom";
-import Home from "../pages/Home/Home";
-import Settings from "../pages/Settings/Settings";
 import useFetch from "../hooks/useFetch";
 import MergeContext from "../Context/MergeContext";
 import Error from "../Error/Error";
+
+const Home = lazy(() => import("../pages/Home/Home"));
+const Settings = lazy(() => import("../pages/Settings/Settings"));
 
 /**
  *
@@ -35,16 +36,25 @@ function App() {
             index
             path="/*"
             element={
-              <Home
-                list={list}
-                selects={selects}
-                setList={setList}
-                setSelects={setSelects}
-              />
+              <Suspense fallback={<></>}>
+                <Home
+                  list={list}
+                  selects={selects}
+                  setList={setList}
+                  setSelects={setSelects}
+                />
+              </Suspense>
             }
           />
 
-          <Route path="/settings" element={<Settings />} />
+          <Route
+            path="/settings"
+            element={
+              <Suspense fallback={<></>}>
+                <Settings />
+              </Suspense>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </MergeContext>

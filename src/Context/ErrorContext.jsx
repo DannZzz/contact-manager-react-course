@@ -7,7 +7,7 @@ export const ErrorInit = {
 };
 
 /**
- * @type {{error: typeof ErrorInit, dispatchError(message: string, endsIn: number): any}}
+ * @type {{error: string, dispatchError(message: string, endsIn: number): any}}
  */
 const _init = { error: ErrorInit, dispatchError(message, endsIn) {} };
 export const ErrorContext = createContext(_init);

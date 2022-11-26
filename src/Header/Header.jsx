@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Header.scss";
-import { Link } from "react-router-dom";
-import { IoSearchOutline } from "react-icons/io5";
+import {  NavLink } from "react-router-dom";
+import { IoHomeOutline, IoInformationCircle, IoSearchOutline, IoSettingsOutline } from "react-icons/io5";
 import { useContext } from "react";
 import { SettingsContext } from "../Context/SettingsContext";
 import { useRef } from "react";
@@ -20,6 +20,9 @@ const Header = () => {
       type: searchType,
     });
   }
+
+  const activeClassName = "selected-link"
+  
   return (
     <div className="header">
       <div className="header-container">
@@ -50,15 +53,21 @@ const Header = () => {
         </div>
 
         <div className="header-item">
-          <Link to="/">Home</Link>
+          <NavLink className={({ isActive }) =>
+              isActive ? activeClassName : undefined
+            } to="/"><IoHomeOutline/> Home</NavLink>
         </div>
 
         <div className="header-item">
-          <Link to="/about">About</Link>
+          <NavLink className={({ isActive }) =>
+              isActive ? activeClassName : undefined
+            } to="/about"><IoInformationCircle/> About</NavLink>
         </div>
 
         <div className="header-item">
-          <Link to="/settings">Settings</Link>
+          <NavLink className={({ isActive }) =>
+              isActive ? activeClassName : undefined
+            } to="/settings"><IoSettingsOutline/> Settings</NavLink>
         </div>
       </div>
     </div>

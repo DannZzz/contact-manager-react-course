@@ -83,7 +83,10 @@ const ContactInModal = ({ contact, onSubmit, label }) => {
         </div>
         <div className="input-field">
           <span>Phone</span>{" "}
-          {[...(copyContact.phone || []), ""]?.map((phone, i) => (
+          {((copyContact.phone || [])?.length <= 3
+            ? [...(copyContact.phone || []), ""]
+            : copyContact.phone || []
+          )?.map((phone, i) => (
             <input
               key={i}
               placeholder={"Phone " + (i + 1)}
@@ -106,7 +109,7 @@ const ContactInModal = ({ contact, onSubmit, label }) => {
           />
         </div>
         <div className="input-field">
-          <span>Avatar</span>{" "}
+          <span>Avatar (Optional)</span>{" "}
           <label htmlFor="avatar-input">
             <img
               className="input-avatar"

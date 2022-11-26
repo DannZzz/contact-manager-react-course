@@ -89,7 +89,10 @@ const ContactInline = ({ contact, onSave, onCancel }) => {
         className="contact-item-email"
       />
       <div className="contact-item-phone">
-        {[...(copyContact.phone || []), ""]?.map((phone, i) => (
+        {((copyContact.phone || [])?.length <= 3
+          ? [...(copyContact.phone || []), ""]
+          : copyContact.phone || []
+        )?.map((phone, i) => (
           <input
             key={i}
             placeholder={"Phone " + (i + 1)}

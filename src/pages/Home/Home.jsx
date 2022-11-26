@@ -22,15 +22,24 @@ const Home = ({ list, setList, selects, setSelects }) => {
     );
   }
   const showList = settings.search.query
-    ? list.filter((contact) =>
-        settings.search.type !== "name"
-          ? contact?.[settings.search.type]
-              .toLowerCase()
-              .includes(settings.search.query.toLowerCase())
-          : `${contact.firstName.toLowerCase()} ${contact.lastName.toLowerCase()}`.includes(
+    ? list.filter((contact) => {
+        switch (settings.search.type) {
+          case "name":
+            return `${contact.firstName.toLowerCase()} ${contact.lastName.toLowerCase()}`.includes(
               settings.search.query.toLowerCase()
-            )
-      )
+            );
+
+          case "phone":
+            return contact.phone.some((ph) =>
+              ph.includes(settings.search.query.toLowerCase())
+            );
+
+          default:
+            return contact?.[settings.search.type]
+              .toLowerCase()
+              .includes(settings.search.query.toLowerCase());
+        }
+      })
     : list;
 
   function onSelectChange(id, checked) {
@@ -44,6 +53,7 @@ const Home = ({ list, setList, selects, setSelects }) => {
 
   function onValuesSave(id, contact, onOk) {
     const entries = Object.entries(contact);
+    console.log(contact);
     for (let index = 0; index < entries.length; index++) {
       const element = entries[index];
       if (element[0] === "phone") {
@@ -53,6 +63,8 @@ const Home = ({ list, setList, selects, setSelects }) => {
             2000
           );
         }
+      } else if (element[0] !== "avatar" && !element?.[1]?.trim?.()) {
+        return dispatchError("Not all fields were specified", 2000);
       }
     }
     const index = list.findIndex((cnt) => cnt.id === id);
