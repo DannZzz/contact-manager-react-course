@@ -2,5 +2,7 @@
   "style": "scss",
   "component": "function",
   "fileExtension": "jsx",
-  "sourceDir": "src"
+  "sourceDir": "src",
+  "directoryComponent": "yes",
+  "nativeStyle": "file"
 }

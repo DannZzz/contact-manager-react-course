@@ -16,3 +16,6 @@ html {
   background-position: fixed;
 }
 
+a {
+  @include prevent-link;
+}

@@ -101,9 +101,9 @@ function Contact({
           alt=""
         />
 
-        <span>
+        <a target="_blank" href={"/contact/" + contact.id}>
           {(contact.firstName || "") + " " + (contact.lastName || "")}
-        </span>
+        </a>
       </div>
 
       <span className="contact-item-email">{contact.email}</span>

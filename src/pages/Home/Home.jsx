@@ -91,12 +91,13 @@ const Home = ({ list, setList, selects, setSelects }) => {
   }
 
   async function onContactRequest(data, onOk) {
+    console.log(data);
     if (Object.values(data).some((v) => !v)) return;
     const form = new FormData();
     form.append("firstName", data.firstName);
     form.append("lastName", data.lastName);
     form.append("email", data.email);
-    form.append("phone", data.phone);
+    data.phone.forEach((phone) => form.append("phone[]", phone));
     form.append("profession", data.profession);
 
     if (data?.avatar && typeof data.avatar !== "string")

@@ -10,6 +10,7 @@ import Error from "../Error/Error";
 
 const Home = lazy(() => import("../pages/Home/Home"));
 const Settings = lazy(() => import("../pages/Settings/Settings"));
+const Contact = lazy(() => import("../pages/Contact/Contact"));
 
 /**
  *
@@ -52,6 +53,14 @@ function App() {
             element={
               <Suspense fallback={<></>}>
                 <Settings />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/contact/:id"
+            element={
+              <Suspense fallback={<></>}>
+                <Contact />
               </Suspense>
             }
           />
