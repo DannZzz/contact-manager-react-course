@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Contact from "../../Contact/Contact";
 import ContactHead from "../../Contact/ContactHead";
 import "./Home.scss";
@@ -8,19 +8,27 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import useFetch from "../../hooks/useFetch";
 import { ErrorContext } from "../../Context/ErrorContext";
 
-const Home = ({ list, setList, selects, setSelects }) => {
+const Home = () => {
+  const [list, setList] = useState([]);
+  const [selects, setSelects] = useState([]);
   const isEdit = useState(false);
   const { request } = useFetch();
   const { settings } = useContext(SettingsContext);
   const { dispatchError } = useContext(ErrorContext);
 
-  function onRemove(id) {
-    request("/list/delete", { method: "DELETE", query: { ids: id } }).then(
-      (res) => {
-        if (res.status === "OK") setList(list.filter((item) => item.id !== id));
-      }
-    );
-  }
+  useEffect(() => {
+    request("/list/get").then((res) => {
+      if (res.data) setList(res.data);
+    });
+
+    const savedSelects = localStorage.getItem("savedSelects")?.split(",") || [];
+    setSelects(savedSelects.filter((f) => f));
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("savedSelects", selects.join(","));
+  }, [selects]);
+
   const showList = settings.search.query
     ? list.filter((contact) => {
         switch (settings.search.type) {
@@ -42,6 +50,14 @@ const Home = ({ list, setList, selects, setSelects }) => {
       })
     : list;
 
+  function onRemove(id) {
+    request("/list/delete", { method: "DELETE", query: { ids: id } }).then(
+      (res) => {
+        if (res.status === "OK") setList(list.filter((item) => item.id !== id));
+      }
+    );
+  }
+
   function onSelectChange(id, checked) {
     const has = selects.includes(id);
     if (checked && !has) {
@@ -52,21 +68,8 @@ const Home = ({ list, setList, selects, setSelects }) => {
   }
 
   function onValuesSave(id, contact, onOk) {
-    const entries = Object.entries(contact);
-    console.log(contact);
-    for (let index = 0; index < entries.length; index++) {
-      const element = entries[index];
-      if (element[0] === "phone") {
-        if (!element[1].filter((x) => x).length) {
-          return dispatchError(
-            "At least one phone number must be specified",
-            2000
-          );
-        }
-      } else if (element[0] !== "avatar" && !element?.[1]?.trim?.()) {
-        return dispatchError("Not all fields were specified", 2000);
-      }
-    }
+    const invalidMessage = invalidDataMessage(contact);
+    if (invalidMessage) return dispatchError(invalidMessage, 2000);
     const index = list.findIndex((cnt) => cnt.id === id);
     const clone = [...list];
     const form = new FormData();
@@ -91,13 +94,17 @@ const Home = ({ list, setList, selects, setSelects }) => {
   }
 
   async function onContactRequest(data, onOk) {
+    if (Object.values(data).some((v) => !v || (Array.isArray(v) && !v.length)))
+      return;
     console.log(data);
-    if (Object.values(data).some((v) => !v)) return;
+    const invalidMessage = invalidDataMessage(data);
+    if (invalidMessage) return dispatchError(invalidMessage, 2000);
+
     const form = new FormData();
     form.append("firstName", data.firstName);
     form.append("lastName", data.lastName);
     form.append("email", data.email);
-    data.phone.forEach((phone) => form.append("phone[]", phone));
+    data.phone?.forEach((phone) => form.append("phone[]", phone));
     form.append("profession", data.profession);
 
     if (data?.avatar && typeof data.avatar !== "string")
@@ -206,3 +213,26 @@ const Home = ({ list, setList, selects, setSelects }) => {
 };
 
 export default Home;
+
+function invalidDataMessage(contact) {
+  const opts = ["firstName", "lastName", "email", "phone", "profession"];
+  for (let i = 0; i < opts.length; i++) {
+    const key = opts[i];
+    const element = contact[key];
+
+    if (key === "firstName" && !element) {
+      return "First name was not specified";
+    } else if (key === "lastName" && !element) {
+      return "Last name was not specified";
+    } else if (key === "email" && !element) {
+      return "Email was not specified";
+    } else if (key === "phone") {
+      if (!element?.filter((x) => x).length) {
+        return "At least one phone number must be specified";
+      }
+    } else if (key === "profession" && !element) {
+      return "Profession was not specified";
+    }
+  }
+  return "";
+}

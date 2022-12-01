@@ -4,7 +4,6 @@ import { IoCreateOutline, IoTrashOutline } from "react-icons/io5";
 import { DEFAULT_AVATAR } from "../config";
 import { ModalContext } from "../Context/ModalContext";
 import { SettingsContext } from "../Context/SettingsContext";
-import ContactInline from "./ContactInline/ContactInline";
 import ContactInModal from "./ContactInModal/ContactInModal";
 
 /**

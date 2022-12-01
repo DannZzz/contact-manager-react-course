@@ -8,6 +8,7 @@ export const SettingsInit = {
   cardView: CARD_VIEW,
   /**@type {"name" | "email" | "phone" | "profession"} */
   search: { query: "", type: "name" },
+  showSearch: true,
 };
 
 /**
