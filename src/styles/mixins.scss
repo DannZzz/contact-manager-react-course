@@ -28,14 +28,18 @@
     transform: scale($scale);
   }
 
-  &:active {
+  &:disabled {
+    background: linear-gradient(silver, grey);
+    filter: drop-shadow(0 0 2px darken(silver, 10%));
+  }
+
+  &:not([disabled]):active {
     background: linear-gradient(
       to bottom,
       lighten(saturate(lighten($color, 15%), 35%), 7%) 0%,
       lighten(saturate(lighten($color, 12%), 15%), 7%) 26%,
       lighten($color, 7%) 100%
     );
-
     transform: translate(0em, $down);
   }
 

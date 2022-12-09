@@ -96,7 +96,6 @@ const Home = () => {
   async function onContactRequest(data, onOk) {
     if (Object.values(data).some((v) => !v || (Array.isArray(v) && !v.length)))
       return;
-    console.log(data);
     const invalidMessage = invalidDataMessage(data);
     if (invalidMessage) return dispatchError(invalidMessage, 2000);
 

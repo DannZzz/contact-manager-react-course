@@ -12,9 +12,13 @@ export const SettingsInit = {
 };
 
 /**
- * @type {{settings: typeof SettingsInit, dispatch(type: keyof typeof SettingsInit, bool: boolean | typeof SettingsInit['search']): any}}
+ * @type {{settings: typeof SettingsInit, dispatch(type: keyof typeof SettingsInit, bool: boolean | typeof SettingsInit['search']): any, dispatchAll: (obj: typeof SettingsInit) => any}}
  */
-const _init = { modeInline: SettingsInit, dispatch(type, bool) {} };
+const _init = {
+  modeInline: SettingsInit,
+  dispatch(type, bool) {},
+  dispatchAll(obj) {},
+};
 export const SettingsContext = createContext(_init);
 
 export const SettingsContextProvider = ({ children }) => {
@@ -25,7 +29,9 @@ export const SettingsContextProvider = ({ children }) => {
   }
 
   return (
-    <SettingsContext.Provider value={{ settings: settings, dispatch }}>
+    <SettingsContext.Provider
+      value={{ settings: settings, dispatch, dispatchAll: setSettings }}
+    >
       {children}
     </SettingsContext.Provider>
   );
