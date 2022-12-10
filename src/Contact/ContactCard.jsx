@@ -66,7 +66,9 @@ function ContactCard({
         alt=""
       />
       <div className="contact-item-card-texts">
-        <strong>{contact.firstName + " " + contact.lastName}</strong>
+        <a target="_blank" href={"/contact/" + contact.id}>
+          <strong>{contact.firstName + " " + contact.lastName}</strong>
+        </a>
         <span>{contact.email}</span>
         {contact.phone.map((phone, i) => (
           <span key={i}>{phone}</span>
